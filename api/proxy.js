@@ -5,10 +5,10 @@ export default async function handler(req, res) {
   const options = { method: req.method, headers: { "Content-Type": "application/json" } };
 
   if (req.method === "GET") {
-    // クエリパラメータを付与
     const query = req.url.split("?")[1];
     if (query) fetchUrl += "?" + query;
   } else if (req.method === "POST") {
+    // Vercelのreq.bodyは既にobjectなのでJSON.stringifyして送信
     options.body = JSON.stringify(req.body);
   }
 
@@ -18,7 +18,6 @@ export default async function handler(req, res) {
 
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    // GASは sometimes text を返すので、まずJSONとしてparseを試みる
     try {
       const data = JSON.parse(text);
       res.status(200).json(data);
