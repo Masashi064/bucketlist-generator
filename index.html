@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バケットリストジェネレーター | 人生の冒険を見つけよう</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="hero-section">
+    <div class="hero-background">
+      <img src="https://images.unsplash.com/photo-1583614556200-efcc7d0b89ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080" alt="Adventure background" loading="eager">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">バケットリストジェネレーター</h1>
+      <p class="hero-subtitle">あなたの人生に新しい冒険とインスピレーションを</p>
+      <div class="hero-cta">
+        <button class="cta-button primary" onclick="scrollToGenerate()">
+          アイディアを生成する
+          <span class="button-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="container">
+      <section class="ideas-section" id="ideas-section">
+        <div class="section-header">
+          <h2 class="section-title">みんなのアイディア</h2>
+          <p class="section-subtitle">他のユーザーが見つけた素晴らしい冒険</p>
+        </div>
+        <div class="ideas-actions">
+          <button class="btn-secondary" onclick="showIdeas()">
+            <span class="btn-icon">✨</span>
+            他のユーザーのアイディアを見る
+          </button>
+        </div>
+        <div id="ideaList" class="idea-grid"></div>
+      </section>
+
+      <section class="generate-section" id="generate-section">
+        <div class="section-header">
+          <h2 class="section-title">自分で生成してみる</h2>
+          <p class="section-subtitle">キーワードからあなただけの特別なアイディアを</p>
+        </div>
+        <div class="generate-form">
+          <div class="input-group">
+            <input 
+              id="keyword" 
+              type="text"
+              placeholder="例：旅行、アート、スポーツ..."
+              class="keyword-input"
+            >
+            <button class="btn-primary" onclick="generate()">
+              <span class="btn-icon">🎯</span>
+              生成する
+            </button>
+          </div>
+        </div>
+        <div id="results" class="results-grid"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p>アイディアを生成中...</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
