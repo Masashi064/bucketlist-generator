@@ -26,7 +26,7 @@ function scrollToGenerate() {
   }, 800);
 }
 
-// Enhanced show ideas function with animations
+// Show random ideas
 async function showIdeas() {
   showLoading();
   
@@ -37,25 +37,14 @@ async function showIdeas() {
     const ideaList = document.getElementById("ideaList");
     ideaList.innerHTML = "";
 
-    // Add staggered animation delay
     data.slice(0, 10).forEach((r, index) => {
       const el = document.createElement("div");
       el.className = "idea";
       el.style.animationDelay = `${index * 0.1}s`;
-      
-      el.innerHTML = `
-        <div class="idea-text">${r[2]}</div>
-        <div class="idea-actions">
-          <button class="like-btn" onclick="likeIdea('${r[0]}')">
-            👍 いいね！
-          </button>
-        </div>
-      `;
-      
+      el.textContent = r[2]; // ← テキストだけ
       ideaList.appendChild(el);
     });
 
-    // Smooth scroll to ideas
     setTimeout(() => {
       document.getElementById("ideas-section").scrollIntoView({ 
         behavior: 'smooth',
@@ -70,7 +59,7 @@ async function showIdeas() {
   }
 }
 
-// Enhanced generate function with animations
+// Generate ideas from keyword
 async function generate() {
   const keyword = document.getElementById("keyword").value.trim();
   
@@ -84,6 +73,7 @@ async function generate() {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "generate", keyword })
     });
     const data = await res.json();
@@ -91,25 +81,14 @@ async function generate() {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";
     
-    // Add staggered animation delay
     data.forEach((r, index) => {
       const el = document.createElement("div");
       el.className = "idea";
       el.style.animationDelay = `${index * 0.1}s`;
-      
-      el.innerHTML = `
-        <div class="idea-text">${r[2]}</div>
-        <div class="idea-actions">
-          <button class="like-btn" onclick="likeIdea('${r[0]}')">
-            👍 いいね！
-          </button>
-        </div>
-      `;
-      
+      el.textContent = r[2]; // ← ボタン削除
       resultsDiv.appendChild(el);
     });
 
-    // Smooth scroll to results
     setTimeout(() => {
       resultsDiv.scrollIntoView({ 
         behavior: 'smooth',
@@ -124,43 +103,8 @@ async function generate() {
   }
 }
 
-// Enhanced like function with visual feedback
-async function likeIdea(id) {
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },  // ←追加
-      body: JSON.stringify({ action: "like", id })
-    });
-
-    // レスポンス確認（開発中はコンソールに出すと安心）
-    const result = await res.json();
-    console.log("like result:", result);
-
-    // ボタンのビジュアルフィードバック
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = "👍 ありがとう！";
-    button.style.background = "var(--accent-color)";
-    button.style.color = "var(--text-light)";
-    button.disabled = true;
-
-    setTimeout(() => {
-      button.textContent = originalText;
-      button.style.background = "";
-      button.style.color = "";
-      button.disabled = false;
-    }, 2000);
-
-  } catch (error) {
-    showError("いいねの送信に失敗しました。");
-    console.error(error);
-  }
-}
-
 // Error notification function
 function showError(message) {
-  // Create error notification
   const errorDiv = document.createElement('div');
   errorDiv.className = 'error-notification';
   errorDiv.textContent = message;
@@ -191,25 +135,12 @@ function showError(message) {
 const errorStyles = document.createElement('style');
 errorStyles.textContent = `
   @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
   }
-  
   @keyframes slideOutRight {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(100%);
-      opacity: 0;
-    }
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
   }
 `;
 document.head.appendChild(errorStyles);
@@ -222,11 +153,7 @@ document.getElementById("keyword").addEventListener("keypress", function(event) 
 });
 
 // Intersection Observer for scroll animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -235,7 +162,6 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-// Observe elements when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   const animatedElements = document.querySelectorAll('.section-header, .generate-section');
   animatedElements.forEach(el => {
@@ -253,7 +179,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Add smooth reveal animations for cards
+// Smooth reveal animations for cards
 function revealCards() {
   const cards = document.querySelectorAll('.idea');
   cards.forEach((card, index) => {
