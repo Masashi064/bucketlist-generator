@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxaTaqOk5Ctyl3U2k-dVR5MWCsLQG0dBtJfEAsp5dt23hAhu70pQgwkl43m_PzvXtit/exec";
+const API_URL = "/api/proxy";
 
 // Loading overlay management
 function showLoading() {
